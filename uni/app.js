@@ -3,7 +3,12 @@ const [minuteHand] = document.getElementsByClassName('minutes')
 const [secondHand] = document.getElementsByClassName('seconds')
 
 
-setInterval(animateClock, 100)
+setInterval(() => {
+  const date = new Date()
+  sec.style.rotate = `${date.getSeconds() / 60}turn`
+  min.style.rotate = `${(date.getMinutes() * 60 + date.getSeconds()) / 3600}turn`
+  hour.style.rotate = `${(date.getHours() * 3600 + date.getMinutes() * 60 + date.getSeconds()) / 43200}turn`
+}, 100)
 
 function animateClock() {
   const date = new Date()
