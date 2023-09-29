@@ -10,11 +10,13 @@
 .meridiem {
   position: absolute;
   top: 147px;
-  left: 65px;
+  left: 67px;
   font-size: 100px;
   font-weight: bold;
   text-shadow: 0 0 1px BLACK, 0 0 1px BLACK;
   color: orange;
+  width: 167px;
+  text-align: right;
 }
 
 #clock::after {
