@@ -14,8 +14,7 @@ runClock()
 
 dateBlock.onclick = handleChangeDateClick
 hourHand.onmousedown = handleGrab
-onmouseup = handleDrop
-// onclick = handleClick
+minuteHand.onmousedown = handleGrab
 
 function runClock() {
   intervalId = setInterval(animateClock, 100)
@@ -98,20 +97,27 @@ function decrementDay() {
 
 function handleGrab(e) {
   body.style.userSelect = 'none'
-
-  // const rotateAngOnStartDeg = prevAngle > 0 ? prevAngle * (180 / Math.PI) : (2 * Math.PI + prevAngle) * (180 / Math.PI)
-
-  onmousemove = (e) => {
-  const prevAngle = parseFloat(hourHand.style.rotate)
   const x0 = clock.offsetLeft + clock.offsetWidth / 2
   const y0 = clock.offsetTop + clock.offsetHeight / 2
-  const x = e.pageX
-  const y = e.pageY
-  const angle = calculateRotationAngle(x, y, x0, y0)
-  const deltaAngle = angle - prevAngle
-  customDate.setTime(customDate.getTime() + deltaAngle * 3600e3)
-  console.log({ prevAngle, angle, deltaAngle, customDate })
-  showDate(customDate)
+  const hand = e.target
+  let ratio = 60e3
+
+  if (hand == hourHand) {
+    minuteHand.hidden = true
+    ratio = 3600e3
+  }
+  onmouseup = handleDrop
+  secondHand.hidden = true
+
+  onmousemove = (e) => {
+    const x = e.pageX
+    const y = e.pageY
+    const prevAngle = parseFloat(hand.style.rotate)
+    const angle = calculateRotationAngle(x, y, x0, y0)
+    const deltaAngle = angle - prevAngle
+    customDate.setTime(customDate.getTime() + (deltaAngle + (deltaAngle < -0.5) - (deltaAngle > 0.5)) * ratio)
+    // console.log({ prevAngle, angle, deltaAngle, customDate })
+    showDate(customDate)
 
   }
 }
@@ -129,7 +135,12 @@ function handleClick(e) {
 
 function handleDrop() {
   onmousemove = null
+  onmouseup = null
   body.style.userSelect = null
+  minuteHand.hidden = false
+  secondHand.hidden = false
+  customDate.setSeconds(Math.round(customDate.getSeconds() / 60) * 60)
+  showDate(customDate)
 }
 
 
@@ -137,13 +148,6 @@ function calculateRotationAngle(x, y, x0, y0) {
   var deltaX = x - x0
   var deltaY = y - y0
   var angleRadians = Math.atan2(deltaX, -deltaY)
-
-  // console.log({ x, y, x0, y0, angleRadians })
-  // var angleDegrees = angleRadians >= 0 ? angleRadians * (180 / Math.PI) : (2 * Math.PI - Math.abs(angleRadians)) * (180 / Math.PI)
-  // var hours = Math.abs(Math.floor(angleDegrees / 30))
-
-
-  // console.log({ aR: angleRadians, aD: angleDegrees, ang0: rotateAngOnStartDeg, h: hours, l: laps,  })
 
   return angleRadians / (2 * Math.PI)
 }
