@@ -233,6 +233,18 @@ time {
   font-weight: bold;
 }
 
+.go {
+  display: block;
+  background-color: orange;
+  border: 1px solid gray;
+  border-radius: 15px;
+  padding: 10px;
+  width: 100px;
+  margin: auto;
+}
+
+
+
 .messages {
   width: 80%;
   margin: auto;

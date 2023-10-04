@@ -1,3 +1,5 @@
+import OPENAI_API_KEY from './key.js'
+
 const { body } = document
 const clock = document.getElementById('clock')
 const [meridiem] = document.getElementsByClassName('meridiem')
@@ -6,6 +8,10 @@ const minuteHand = document.getElementById('min')
 const secondHand = document.getElementById('sec')
 const [dateBlock] = document.getElementsByClassName('date')
 const [yearP, monthP, dateP] = document.querySelectorAll('.date p')
+const goBtn = document.querySelector('.go')
+const messagesBlock = document.querySelector('.messages>p')
+const noApiKeyStory = ''
+
 
 let intervalId
 let customDate
@@ -15,10 +21,13 @@ runClock()
 dateBlock.onclick = handleChangeDateClick
 hourHand.onmousedown = handleGrab
 minuteHand.onmousedown = handleGrab
+// goBtn.onclick = OPENAI_API_KEY ? handleTimeTrip
+//   : messagesBlock.innerText = 'hello'
+goBtn.onclick = handleTimeTrip
 
-function runClock() {
-  intervalId = setInterval(animateClock, 100)
-}
+  function runClock() {
+    intervalId = setInterval(animateClock, 100)
+  }
 
 function animateClock() {
   const date = new Date()
@@ -48,19 +57,20 @@ function handleChangeDateClick(e) {
   if (!e.target.matches('button')) return
 
   const btn = e.target
+  const step = e.ctrlKey ? e.shiftKey ? 1000 : 10 : e.shiftKey ? 100 : 1
 
   if (btn.matches('.year>.up')) {
-    incrementYear()
+    incrementYear(step)
   } else if (btn.matches('.year>.down')) {
-    decrementYear()
+    decrementYear(step)
   } else if (btn.matches('.month>.up')) {
-    incrementMonth()
+    incrementMonth(step)
   } else if (btn.matches('.month>.down')) {
-    decrementMonth()
+    decrementMonth(step)
   } else if (btn.matches('.day>.up')) {
-    incrementDay()
+    incrementDay(step)
   } else if (btn.matches('.day>.down')) {
-    decrementDay()
+    decrementDay(step)
   }
 
   stopClock()
@@ -71,28 +81,28 @@ function stopClock() {
   clearInterval(intervalId)
 }
 
-function incrementYear() {
-  customDate.setFullYear(customDate.getFullYear() + 1)
+function incrementYear(step) {
+  customDate.setFullYear(customDate.getFullYear() + step)
 }
 
-function decrementYear() {
-  customDate.setFullYear(customDate.getFullYear() - 1)
+function decrementYear(step) {
+  customDate.setFullYear(customDate.getFullYear() - step)
 }
 
-function incrementMonth() {
-  customDate.setMonth(customDate.getMonth() + 1)
+function incrementMonth(step) {
+  customDate.setMonth(customDate.getMonth() + step)
 }
 
-function decrementMonth() {
-  customDate.setMonth(customDate.getMonth() - 1)
+function decrementMonth(step) {
+  customDate.setMonth(customDate.getMonth() - step)
 }
 
-function incrementDay() {
-  customDate.setDate(customDate.getDate() + 1)
+function incrementDay(step) {
+  customDate.setDate(customDate.getDate() + step)
 }
 
-function decrementDay() {
-  customDate.setDate(customDate.getDate() - 1)
+function decrementDay(step) {
+  customDate.setDate(customDate.getDate() - step)
 }
 
 function handleGrab(e) {
@@ -143,7 +153,6 @@ function handleDrop() {
   showDate(customDate)
 }
 
-
 function calculateRotationAngle(x, y, x0, y0) {
   var deltaX = x - x0
   var deltaY = y - y0
@@ -152,5 +161,34 @@ function calculateRotationAngle(x, y, x0, y0) {
   return angleRadians / (2 * Math.PI)
 }
 
+async function handleTimeTrip() {
+  messagesBlock.innerText = 'Loading...'
+  goBtn.disabled = true
+
+  const prompt = `The date is ${customDate}. Write a story relevant to this date with real (preferably) or fictional characters. Mention multiple historical events of different kinds closest before this date through the story. If the date is in the future to you come up with some plausible futuristic story of possible future for this date. Not more than 4 paragraphs.`
+
+  const url = 'https://api.openai.com/v1/chat/completions';
+
+
+  const headers = {
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${OPENAI_API_KEY}`
+  };
+
+  const data = JSON.stringify({
+    model: 'gpt-3.5-turbo',
+    messages: [{ role: 'user', content: prompt }],
+    temperature: 0.7
+  });
+
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: headers,
+    body: data
+  })
+  const answer = await response.json()
+  messagesBlock.innerText = answer.choices[0].message.content
+  goBtn.disabled = false
+}
 
 
