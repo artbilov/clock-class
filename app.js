@@ -1,4 +1,7 @@
-import OPENAI_API_KEY from './key.js'
+let OPENAI_API_KEY
+(async () => {try {
+  OPENAI_API_KEY = await import('./key.js')
+} catch { }})()
 
 const { body } = document
 const clock = document.getElementById('clock')
@@ -10,7 +13,27 @@ const [dateBlock] = document.getElementsByClassName('date')
 const [yearP, monthP, dateP] = document.querySelectorAll('.date p')
 const goBtn = document.querySelector('.go')
 const messagesBlock = document.querySelector('.messages>p')
-const noApiKeyStory = ''
+const noApiKeyStory = `In the heart of a bustling metropolis, a brilliant yet enigmatic programmer named Alex finds themselves entangled in a web of mystery and danger. Deeply intrigued by the potential of the ChatGPT platform, Alex becomes determined to unlock its full power by acquiring an API key. Unbeknownst to Alex, this quest would lead them on a thrilling journey.
+
+Our story begins when Alex receives a cryptic message in their inbox. The message, sent by an anonymous informant, hints at a hidden organization known as "The Keymasters" who guard the coveted API keys. Intrigued, Alex delves deeper into the mystery, desperate to unravel the secrets that lie behind this secretive group.
+
+As Alex delves further into the investigation, they encounter a series of encrypted clues scattered across the city. The clues, concealed within the darkest corners and seedy underbelly of the metropolis, lead them to a shadowy hacker collective known as "The Cipher". 
+
+With their expertise in cracking codes and accessing hidden networks, The Cipher possesses the knowledge Alex seeks. However, gaining their trust proves to be a treacherous task. Alex must prove their worth by completing a series of daring hacking challenges, each more perilous than the last.
+
+As Alex successfully navigates the treacherous trials set forth by The Cipher, they earn the respect of the collective's leader, a mysterious figure known only as "Cipher Prime". Impressed by Alex's skills and determination, Cipher Prime reveals a shocking truth: The Keymasters are not just a secretive organization, but an elite group of hackers who control access to the API keys.
+
+In order to obtain an API key, Alex must confront the Keymasters directly. Cipher Prime provides Alex with a hidden location, deep within an abandoned warehouse district where the Keymasters hold their clandestine meetings.
+
+Armed with their newfound knowledge, Alex infiltrates the warehouse, navigating a labyrinth of traps and security measures. Finally, they reach the heart of the Keymasters' lair, a high-tech control room where the API keys are stored.
+
+A tense confrontation ensues between Alex and the Keymasters' leader, a formidable hacker known as "Keymaster X". Alex must engage in a battle of wits, using their programming skills to outsmart Keymaster X and gain control of the API keys.
+
+With every line of code and tactical maneuver, Alex gains the upper hand. In a final climactic showdown, they emerge victorious, obtaining the coveted API key that will grant them access to the full power of the ChatGPT platform.
+
+As the story concludes, Alex returns to their humble workstation, API key in hand. The thrilling adventure has forever changed them, igniting a fire within to explore the limitless possibilities of AI-powered conversations. Little do they know, this is just the beginning of a grand adventure that will shape the future of their programming career.
+
+And so, with the API key secured, Alex embarks on a new chapter, ready to unleash their creativity and reshape the world through the power of ChatGPT.`
 
 
 let intervalId
@@ -21,13 +44,11 @@ runClock()
 dateBlock.onclick = handleChangeDateClick
 hourHand.onmousedown = handleGrab
 minuteHand.onmousedown = handleGrab
-// goBtn.onclick = OPENAI_API_KEY ? handleTimeTrip
-//   : messagesBlock.innerText = 'hello'
-goBtn.onclick = handleTimeTrip
+goBtn.onclick = OPENAI_API_KEY ? handleTimeTrip : showPlaceHolder
 
-  function runClock() {
-    intervalId = setInterval(animateClock, 100)
-  }
+function runClock() {
+  intervalId = setInterval(animateClock, 100)
+}
 
 function animateClock() {
   const date = new Date()
@@ -54,7 +75,7 @@ function showDate(date,) {
 }
 
 function handleChangeDateClick(e) {
-  if (!e.target.matches('button')) return
+  if (!e.target.matches('button:not(.go)')) return
 
   const btn = e.target
   const step = e.ctrlKey ? e.shiftKey ? 1000 : 10 : e.shiftKey ? 100 : 1
@@ -191,4 +212,7 @@ async function handleTimeTrip() {
   goBtn.disabled = false
 }
 
+function showPlaceHolder() {
+  messagesBlock.innerText = noApiKeyStory
+}
 
