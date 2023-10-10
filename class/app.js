@@ -13,7 +13,7 @@ function main() {
   const aiClock = document.createElement('section')
   const timeBlock = document.createElement('time')
   aiClock.className = 'ai-clock'
-  
+
   aiClock.append(timeBlock)
   document.body.append(aiClock)
   clock.appendTo(timeBlock)
@@ -26,7 +26,14 @@ function main() {
     dateControl.update(date)
   })
 
-  dateControl.addEventListener('changerequest', e => {
+  clock.addEventListener('stoprequest', () => time.stop())
+  clock.addEventListener('startrequest', () => time.start())
+  clock.addEventListener('shiftrequest', e => {
+    const { unit, amount } = e.detail
+    time.shift(unit, amount)
+  })
+
+  dateControl.addEventListener('shiftrequest', e => {
     const { unit, amount } = e.detail
     time.shift(unit, amount)
   })

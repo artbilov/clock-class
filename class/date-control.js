@@ -73,7 +73,7 @@ class DateControl extends EventTarget {
 
   requestChange(unit, amount) {
     const detail = { unit, amount }
-    const e = new CustomEvent('changerequest', { detail })
+    const e = new CustomEvent('shiftrequest', { detail })
     this.dispatchEvent(e)
   }
 }
