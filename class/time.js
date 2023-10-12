@@ -19,6 +19,7 @@ class Time extends EventTarget {
     const { year, month, day, hour, min, sec } = this.currentShift
     date.setFullYear(date.getFullYear() + year, date.getMonth() + month, date.getDate() + day)
     date.setHours(date.getHours() + hour, date.getMinutes() + min, date.getSeconds() + sec)
+    this.date = date
     const detail = { date }
     const e = new CustomEvent('change', { detail })
 

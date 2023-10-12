@@ -1,3 +1,19 @@
+.ai-clock {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+#api-key-input {
+  width: 430px;
+  height: 20px;
+  text-align: center;
+  margin-top: 15px;
+  border: 1px solid grey;
+  border-radius: 5px;
+}
+
 .clock {
   width: 300px;
   height: 300px;
@@ -245,20 +261,7 @@ time {
 
 
 
-.messages {
+.story {
   width: 80%;
   margin: auto;
 }
-
-/* #spot {
-  width: 10px;
-  height: 10px;
-  border-radius: 5px;
-  background-color: red;
-  pointer-events: none;
-  position: absolute;
-  top: 50px;
-  left: 50px;
-  z-index: 99;
-  translate: -50% -50%;
-} */

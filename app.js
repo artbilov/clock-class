@@ -1,6 +1,6 @@
 let OPENAI_API_KEY
 (async () => {try {
-  OPENAI_API_KEY = await import('./key.js')
+  OPENAI_API_KEY = await import('./class/key.js')
 } catch { }})()
 
 const { body } = document
@@ -186,7 +186,7 @@ async function handleTimeTrip() {
   messagesBlock.innerText = 'Loading...'
   goBtn.disabled = true
 
-  const prompt = `The date is ${customDate}. Write a story relevant to this date with real (preferably) or fictional characters. Mention multiple historical events of different kinds closest before this date through the story. If the date is in the future to you come up with some plausible futuristic story of possible future for this date. Not more than 4 paragraphs.`
+  const prompt = `The date is ${customDate}. Write a story relevant to this date with real (preferably) or fictional characters. Mention multiple historical events of different kinds closest before this date through the story. If the date is in the future to you come up with some plausible futuristic story of possible future for this date. Not more than 4 paragraphs. Response should start with Story Title in double asterisks.`
 
   const url = 'https://api.openai.com/v1/chat/completions';
 

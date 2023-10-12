@@ -1,5 +1,0 @@
-export { Message }
-
-class Message {
-  
-}

@@ -25,12 +25,16 @@ class DateControl extends EventTarget {
       return unitBlock
     })
 
+    const goBtn = document.createElement('button')
+    goBtn.className = 'go'
+    goBtn.innerText = 'Go'
     dateContainer.className = 'date'
-    dateContainer.append(yearDiv, monthDiv, dayDiv)
+    dateContainer.append(yearDiv, monthDiv, dayDiv, goBtn)
 
     const [yearDisplay, monthDisplay, dayDisplay] = dateContainer.querySelectorAll('p')
 
     this.element = dateContainer
+    this.goBtn = goBtn
     Object.assign(this, { yearDisplay, monthDisplay, dayDisplay })
   }
 
@@ -50,12 +54,15 @@ class DateControl extends EventTarget {
 
   assignListeners() {
     this.element.onclick = e => {
-      if (!e.target.matches('button:not(.go)')) return
+      if (!e.target.matches('button')) return
 
       const btn = e.target
       const step = e.ctrlKey ? e.shiftKey ? 1000 : 10 : e.shiftKey ? 100 : 1
-
-      if (btn.matches('.year>.up')) {
+      
+      if (btn.matches('.go')) {
+        this.requestStory()
+        btn.disabled = true
+      } else if (btn.matches('.year>.up')) {
         this.requestChange('year', step)
       } else if (btn.matches('.year>.down')) {
         this.requestChange('year', -step)
@@ -75,5 +82,14 @@ class DateControl extends EventTarget {
     const detail = { unit, amount }
     const e = new CustomEvent('shiftrequest', { detail })
     this.dispatchEvent(e)
+  }
+
+  requestStory() {
+    const e = new CustomEvent('storyrequest')
+    this.dispatchEvent(e)
+  }
+
+  allowTrips() {
+    this.goBtn.disabled = false
   }
 }

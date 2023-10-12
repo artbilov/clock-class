@@ -89,10 +89,7 @@ class Clock extends EventTarget {
         const deltaAngle = angle - prevAngle
         const s = (deltaAngle + (deltaAngle < -0.5) - (deltaAngle > 0.5)) * ratio
 
-        this.requestShift(s)
-        spot.style.left = x + 'px'
-        spot.style.top = y + 'px'
-
+        this.requestShift(s * 10)
       }
     }
   }
@@ -130,3 +127,4 @@ function calculateRotationAngle(x, y, x0, y0) {
 
   return angleRadians / (2 * Math.PI)
 }
+
