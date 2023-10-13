@@ -1,4 +1,24 @@
-#clock {
+.ai-clock {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+#api-key-input {
+  width: 430px;
+  height: 20px;
+  text-align: center;
+  margin-top: 15px;
+  border: 1px solid grey;
+  border-radius: 5px;
+}
+
+#api-key-input:focus {
+  outline: 2px dashed orange;
+}
+
+.clock {
   width: 300px;
   height: 300px;
   background: orange;
@@ -19,7 +39,7 @@
   text-align: right;
 }
 
-#clock::after {
+.clock::after {
   content: '';
   width: 4px;
   height: 4px;
@@ -60,20 +80,20 @@
   border-top: 21px solid currentColor;
 }
 
-#min {
+.min {
   color: #222;
 }
 
-#min::before {
+.min::before {
   top: 20px;
   border-bottom-width: 130px;
 }
 
-#hour {
+.hour {
   color: #444;
 }
 
-#hour::before {
+.hour::before {
   top: 40px;
   border-bottom-width: 110px;
 }
@@ -245,7 +265,7 @@ time {
 
 
 
-.messages {
+.story {
   width: 80%;
   margin: auto;
 }

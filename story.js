@@ -44,7 +44,7 @@ class Story extends EventTarget {
     const data = JSON.stringify({
       model: 'gpt-3.5-turbo',
       messages: [{ role: 'user', content: prompt }],
-      temperature: 0.7
+      temperature: temp
     });
 
     const response = await fetch(url, {
@@ -90,3 +90,4 @@ As the story concludes, Alex returns to their humble workstation, API key in han
 And so, with the API key secured, Alex embarks on a new chapter, ready to unleash their creativity and reshape the world through the power of ChatGPT.`
 
 
+window.temp = 0.7
